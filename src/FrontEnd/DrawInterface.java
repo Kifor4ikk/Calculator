@@ -18,6 +18,11 @@ public class Components extends JComponent {
        g.setFont(new Font("Comic Sans",10 ,30));
        g.drawString(Calculate.getFormula().toString() ,464-17*Calculate.getFormula().length(),60);
        //-------
-       //g.drawString(Calculate.getResultByPos(0) , 7,200);
+        // CustomButton four = new CustomButton(60,60,410 - 67*3,300 - 67,"4",new ButtonAction("4",null ,1 , "4"));
+       g.drawString(Calculate.getResultByPos(0) + "" , 20,300-67 + 30);
+       g.drawString(Calculate.getResultByPos(1) + "" , 20,300-67 + 70);
+       g.drawString(Calculate.getResultByPos(2) + "" , 20,300-67 + 110);
+       g.drawString(Calculate.getResultByPos(3) + "" , 20,300-67 + 150);
+       g.drawString(Calculate.getResultByPos(4) + "" , 20,300-67 + 190);
     }
 }
