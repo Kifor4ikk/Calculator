@@ -8,44 +8,103 @@ public class Calculate {
 
     private static StringBuilder formula = new StringBuilder(" ");
     private static StringBuilder solution = new StringBuilder();
-    private static String [] results = new String[5];
-    private static int resultCounter = 0;
+    private static String [] results = {" ", " " , " " , " " , " " , " "};
 
+    /**
+     *
+     * @param symbols symbol which to be added to end of formula line
+     */
     public static void addSymbols(String symbols){
-        formula.append(symbols);
+        if(formula.length() < 75) {
+            if (symbols == "+" || symbols == "-" || symbols == "/" || symbols == "*" || symbols == "%") {
+                if (formula.charAt(formula.length() - 1) == '+' ||
+                        formula.charAt(formula.length() - 1) == '-' ||
+                        formula.charAt(formula.length() - 1) == '/' ||
+                        formula.charAt(formula.length() - 1) == '*' ||
+                        formula.charAt(formula.length() - 1) == '%') {
+
+                    formula.deleteCharAt(formula.length() - 1);
+                    formula.append(symbols);
+                } else {
+                    formula.append(symbols);
+                }
+            } else {
+                formula.append(symbols);
+            }
+        }
     }
 
+    /**
+     * Delete Last symbol of formula
+     */
     public static void deleteLastSymbol(){
         if(formula.length() >= 1) {
             formula.deleteCharAt(formula.length()-1);
         }
     }
 
+    /**
+     * Clear formula
+     */
     public static void clearFormula(){
+        System.out.println("Deleted " + formula.length() + " symbols");
         formula.delete(0 , formula.length());
     }
+
+    /**
+     *
+     * @return formula in string formate
+     */
     public static String getFormula(){
         return formula.toString();
     }
 
+    /**
+     *
+     * @return string Solution of math formula
+     */
     public static String getSolution() {
-        solution.delete(0 , solution.length()-1);
-        //solution.append(eval(formula.toString()));
-        System.out.println(solution.toString());
-        /*
-        if(resultCounter == 4){
-            resultCounter = 0;
-            results[1] = results[0];
-            results[2] = results[1];
-            results[2] = results[3];
-            results[3] = results[4];
+        solution.delete(0 , solution.length());
+        if(eval(formula.toString()) > 999999999999999999l){
+            solution.append("overflow");
         }
-        //results[resultCounter] = solution.toString();
-        resultCounter++;
+        else {
+
+            if (eval(formula.toString()) % 1000000 == 0) {
+                solution.append(eval(formula.toString()) / 1000000 + " * 10^6");
+            } else {
+                if (eval(formula.toString()) > 1000000) {
+                    solution.append(String.format("%.2f", eval(formula.toString()) % 1000000));
+                    solution.append("+" + String.format("%.0f", eval(formula.toString()) / 1000000) + "*10^6");
+                } else {
+                    solution.append(String.format("%.2f", eval(formula.toString())));
+                }
+            }
+        }
+
+        /*
+        if(eval(formula.toString()) >= 1000000 && (eval(formula.toString()) <= 10000000)){
+            solution.append(String.format("%.2f", eval(formula.toString()) % 1000000));
+            solution.append("+" + String.format("%.0f", eval(formula.toString()) / 1000000) + "*10^6");
+        }
         */
+
+
+        results[5] = results[4];
+        results[4] = results[3];
+        results[3] = results[2];
+        results[2] = results[1];
+        results[1] = results[0];
+        results[0] = solution.toString();
+
         return solution.toString();
     }
-/*
+
+    /**
+     *
+     * @param pos
+     * @return result by pos
+     */
     public static String getResultByPos(int pos){
         if(pos <= 4 && pos >= 0){
             return results[pos];
@@ -54,9 +113,25 @@ public class Calculate {
             return " ";
         }
     }
-*/
 
-    /*
+    /**
+     *
+     * @param x input double
+     * @return factorial x
+     */
+    public static long factorial(double x){
+        long fact = 1;
+        for (int i = 2; i <= x; i++) {
+            fact = fact * i;
+        }
+        return fact;
+    }
+
+    /**
+     *
+     * @param str input string with formula
+     * @return answer
+     */
     public static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;
@@ -117,7 +192,7 @@ public class Calculate {
                 } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
                     while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
                     x = Double.parseDouble(str.substring(startPos, this.pos));
-                } else if (ch >= 'a' && ch <= 'z') { // functions
+                } else if (ch >= 'a' && ch <= 'z' || ch == '!') { // functions
                     while (ch >= 'a' && ch <= 'z') nextChar();
                     String func = str.substring(startPos, this.pos);
                     x = parseFactor();
@@ -127,14 +202,13 @@ public class Calculate {
                     else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
                     else throw new RuntimeException("Unknown function: " + func);
                 } else {
+                    solution.append("ERROR");
                     throw new RuntimeException("Unexpected: " + (char)ch);
                 }
 
                 if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
-
                 return x;
             }
         }.parse();
     }
-    */
 }

@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
     }
 
     public MainFrame(){
-        Components components = new Components();
+        DrawInterface drawInterface = new DrawInterface();
 
         setSize(494,471);
         setTitle("Calculator v1.1");
@@ -80,11 +80,11 @@ public class MainFrame extends JFrame {
         add(divide);
         add(multiply);
         add(minus);
-        add(factorial);
+        //add(factorial);
         add(root);
         add(power);
         add(buttonPanel);
-        add(components);
+        add(drawInterface);
         setVisible(true);
 
         for(;;){
