@@ -4,6 +4,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import static java.lang.Math.pow;
+
 public class Calculate {
 
     private static StringBuilder formula = new StringBuilder(" ");
@@ -21,6 +23,7 @@ public class Calculate {
                         formula.charAt(formula.length() - 1) == '-' ||
                         formula.charAt(formula.length() - 1) == '/' ||
                         formula.charAt(formula.length() - 1) == '*' ||
+                        formula.charAt(formula.length() - 1) == '^' ||
                         formula.charAt(formula.length() - 1) == '%') {
 
                     formula.deleteCharAt(formula.length() - 1);
@@ -65,30 +68,20 @@ public class Calculate {
      */
     public static String getSolution() {
         solution.delete(0 , solution.length());
-        if(eval(formula.toString()) > 999999999999999999l){
-            solution.append("overflow");
-        }
-        else {
-
-            if (eval(formula.toString()) % 1000000 == 0) {
-                solution.append(eval(formula.toString()) / 1000000 + " * 10^6");
-            } else {
-                if (eval(formula.toString()) > 1000000) {
-                    solution.append(String.format("%.2f", eval(formula.toString()) % 1000000));
-                    solution.append("+" + String.format("%.0f", eval(formula.toString()) / 1000000) + "*10^6");
-                } else {
-                    solution.append(String.format("%.2f", eval(formula.toString())));
-                }
+        boolean isFindSolution = false;
+        for (int i = 6; i < 200; i++) {
+            if (eval(formula.toString()) >= pow(10, i) && eval(formula.toString()) < pow(10, i + 1)) {
+                solution.append(String.format("%.2f",(eval(formula.toString()))/pow(10,i)));
+                solution.append(("*10^" + i));
+                isFindSolution = true;
+                System.out.println(i + " - " +  pow(10,i) + " - HERE - " + solution);
+                break;
             }
         }
-
-        /*
-        if(eval(formula.toString()) >= 1000000 && (eval(formula.toString()) <= 10000000)){
-            solution.append(String.format("%.2f", eval(formula.toString()) % 1000000));
-            solution.append("+" + String.format("%.0f", eval(formula.toString()) / 1000000) + "*10^6");
+        if(!isFindSolution){
+            solution.append(String.format("%.2f", eval(formula.toString())));
+            System.out.println(solution);
         }
-        */
-
 
         results[5] = results[4];
         results[4] = results[3];
@@ -206,7 +199,7 @@ public class Calculate {
                     throw new RuntimeException("Unexpected: " + (char)ch);
                 }
 
-                if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+                if (eat('^')) x = pow(x, parseFactor()); // exponentiation
                 return x;
             }
         }.parse();
