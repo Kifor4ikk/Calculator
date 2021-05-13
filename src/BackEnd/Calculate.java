@@ -25,7 +25,6 @@ public class Calculate {
                         formula.charAt(formula.length() - 1) == '*' ||
                         formula.charAt(formula.length() - 1) == '^' ||
                         formula.charAt(formula.length() - 1) == '%') {
-
                     formula.deleteCharAt(formula.length() - 1);
                     formula.append(symbols);
                 } else {
