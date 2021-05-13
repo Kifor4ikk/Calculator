@@ -15,7 +15,8 @@ public class DrawInterface extends JComponent {
        g.fillRect(7,7,464,85);
        g.fillRect(410 - 67*6,300 - 67,60*3+7*2,60*3+7*2);
        g.setColor(Color.BLACK);
-
+       g.setFont(new Font("Comic Sans", 10, 10));
+       g.drawString("By Kifor4ik" , 10 , 18);
 
         if (Calculate.getFormula().length() + 1 > 40) {
             g.setFont(new Font("Comic Sans", 10, 10));

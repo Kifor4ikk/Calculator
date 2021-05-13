@@ -14,7 +14,7 @@ public class Calculate {
 
     /**
      *
-     * @param symbols symbol which to be added to end of formula line
+     * @param symbols symbol which should be added to end of formula line
      */
     public static void addSymbols(String symbols){
         if(formula.length() < 75) {
@@ -69,7 +69,7 @@ public class Calculate {
     public static String getSolution() {
         solution.delete(0 , solution.length());
         boolean isFindSolution = false;
-        for (int i = 6; i < 200; i++) {
+        for (int i = 6; i < 400; i++) {
             if (eval(formula.toString()) >= pow(10, i) && eval(formula.toString()) < pow(10, i + 1)) {
                 solution.append(String.format("%.2f",(eval(formula.toString()))/pow(10,i)));
                 solution.append(("*10^" + i));
@@ -101,8 +101,7 @@ public class Calculate {
     public static String getResultByPos(int pos){
         if(pos <= 4 && pos >= 0){
             return results[pos];
-        }
-        else{
+        } else{
             return " ";
         }
     }
